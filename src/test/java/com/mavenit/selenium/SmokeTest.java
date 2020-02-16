@@ -1,5 +1,8 @@
 package com.mavenit.selenium;
 
+import com.mavenit.selenium.pages.HomePage;
+import com.mavenit.selenium.pages.ResultsPage;
+import com.mavenit.selenium.pages.TrolleyPage;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -12,74 +15,57 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 
-public class SmokeTest extends Hooks {
+public class SmokeTest extends Hooks{
+
+    private HomePage homePage = new HomePage();
+    ResultsPage resultsPage = new ResultsPage();
+    private TrolleyPage trolleyPage= new TrolleyPage();
 
     @Test
     public void searchTest() {
-        doSearch("puma");
-
-        String url = driver.getCurrentUrl();
-        assertThat(url, endsWith("puma"));
-
-
-        List<WebElement> productWebElements = driver.findElements(By.cssSelector("a[data-test='component-product-card-title']"));
-
-        for (WebElement indProduct : productWebElements) {
-            String actual = indProduct.getText();
-            assertThat(actual, containsString("puma"));
+        String searchTerm="puma";
+        homePage.doSearch(searchTerm);
+        assertThat(homePage.getCurrentUrl(), endsWith(searchTerm));
+        List<String> actualProductList = resultsPage.getAllProductNames();
+        for (String product: actualProductList){
+            assertThat(product,containsString(searchTerm));
         }
-
-        String actualTitle = driver.findElement(By.className("search-title__term")).getText();
-        assertThat(actualTitle, is(equalToIgnoringCase("puma")));
-
-        driver.findElement(By.id("searchTerm")).sendKeys("mobile");
-        driver.findElement(By.id("searchTerm"))
-                .sendKeys(Keys.ENTER);
-
+        String actualTitle = resultsPage.getSearchTitle();
+        assertThat(actualTitle, is(equalToIgnoringCase(searchTerm)));
     }
 
     @Test
     public void basketTest() {
-        doSearch("nike");
-
-        List<WebElement> productWebElements = driver.findElements(By.cssSelector("a[data-test='component-product-card-title']"));
-        if (productWebElements.size() == 0) {
-            fail("No Products found with: " + "nike");
-        }
-
-        // TODO: 2020-02-08 this will be converted in future
-        Random random = new Random();
-        int randomNumber = random.nextInt(productWebElements.size() - 1);
-
-        WebElement selectedElement = productWebElements.get(randomNumber);
-        String selectedProductName = selectedElement.getText();
-        selectedElement.click();
-
-        addToBasket();
-        goToBasket();
-        String actual = getProductInBasket();
+        homePage.doSearch("nike");
+        String selectedProductName =resultsPage.selectAnyProduct();
+        trolleyPage.addToTrolley();
+        trolleyPage.goToTrolley();
+        String actual = trolleyPage.getProductInTrolley();
         assertThat(actual, is(equalToIgnoringCase(selectedProductName)));
     }
-
-
-    public void doSearch(String searchTerm) {
-        driver.findElement(By.id("searchTerm"))
-                .sendKeys(searchTerm);
-
-        driver.findElement(By.id("searchTerm"))
-                .sendKeys(Keys.ENTER);
-
-    }
-
-
-    public void addToBasket() {
-        driver.findElement(By.cssSelector("button[data-test='component-att-button']")).click();
-    }
-
-    public void goToBasket() {
-        driver.findElement(By.cssSelector(".xs-row a[data-test='component-att-button-basket']")).click();
-    }
-    public String getProductInBasket(){
-       return driver.findElement(By.cssSelector(".ProductCard__content__9U9b1.xsHidden.lgFlex")).getText();
-    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

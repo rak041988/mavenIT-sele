@@ -1,55 +1,25 @@
 package com.mavenit.selenium;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.After;
+import com.mavenit.selenium.driver.DriverFactory;
 import org.junit.Before;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
+
 
 public class Hooks {
 
-    public static WebDriver driver;
-
-    // TODO: 2020-02-08 pass from outside 
-    private String browser = "";
+    DriverFactory factory = new DriverFactory();
 
     @Before
     public void setUp() {
-        openBrowser();
+        factory.openBrowser();
         // TODO: 2020-02-08 Remove url from code 
-        navigateTo("https://www.argos.co.uk");
-        maxiBrowser();
+        factory.navigateTo("https://www.argos.co.uk");
+        factory.maxiBrowser();
     }
 
     //  @After
     public void tearDown() {
-        driver.quit();
-    }
-    
-    public void navigateTo(String url){
-        driver.get(url);
-    }
-    
-    public void maxiBrowser(){
-        driver.manage().window().maximize();
+        factory.closeBrowser();
     }
 
-    public void openBrowser() {
-        switch (browser) {
-            case "ie":
-                WebDriverManager.iedriver().setup();
-                driver = new InternetExplorerDriver();
-                break;
-            case "firfox":
-                WebDriverManager.firefoxdriver().setup();
-                driver = new FirefoxDriver();
-                break;
-            default:
-                WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
-        }
-    }
 
 }
