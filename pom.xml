@@ -19,6 +19,7 @@
     <selenium.version>3.141.59</selenium.version>
     <hamcrest>1.3</hamcrest>
     <webdriver.manager>3.7.1</webdriver.manager>
+    <cucumber.vewrsion>1.2.5</cucumber.vewrsion>
   </properties>
 
   <dependencies>
@@ -49,6 +50,19 @@
 
 
 
+
+    <dependency>
+      <groupId>info.cukes</groupId>
+      <artifactId>cucumber-junit</artifactId>
+      <version>${cucumber.vewrsion}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>info.cukes</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber.vewrsion}</version>
+    </dependency>
 
 
 

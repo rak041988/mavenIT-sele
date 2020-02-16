@@ -1,7 +1,7 @@
 package com.mavenit.selenium;
 
 import com.mavenit.selenium.driver.DriverFactory;
-import org.junit.Before;
+import cucumber.api.java.Before;
 
 
 public class Hooks {

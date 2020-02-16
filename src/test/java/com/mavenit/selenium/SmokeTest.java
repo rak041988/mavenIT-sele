@@ -15,7 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 
-public class SmokeTest extends Hooks{
+public class SmokeTest {
 
     private HomePage homePage = new HomePage();
     ResultsPage resultsPage = new ResultsPage();
